@@ -1,3 +1,11 @@
+//score
+let score = 0;
+let elmScore = document.getElementById("score");
+
+function updateScore() {
+    elmScore.innerHTML = `Score : ${score}`;
+
+}
 
 //definition du serpent
 let direction = 0; // 0 haut 1 droite 2 bas 3 gauche
@@ -81,46 +89,148 @@ function seDeplacer(serpent) {
     }
 } 
 
+//Fonction des pommes
+function nombreAleatoireEntre1et40() {
+    return Math.floor(1 + Math.random()*39);
+}
+let pomme = [nombreAleatoireEntre1et40(), nombreAleatoireEntre1et40()];
 
-//initialisation du serpent
+//return true seulement si la position n'est pas dans le corps du serpent.
+function testerPositionSerpent(coordonnees){
+    let test = true;
+    for (let elm of serpent.corps) {
+        if (elm[0] == coordonnees[0] && elm[1] == coordonnees[1]) {
+            test = false;
+        }
+    }
+    return test;
+}
+
+function nouvellePomme() {
+    pomme = [nombreAleatoireEntre1et40(), nombreAleatoireEntre1et40()];
+    if (testerPositionSerpent(pomme)) {
+        document
+    .getElementById(`r${pomme[0]}_c${pomme[1]}`)
+    .classList.add("pomme");
+    } else {
+        nouvellePomme();
+    }
+}
+
+function supprPomme() {
+    document
+    .getElementById(`r${pomme[0]}_c${pomme[1]}`)
+    .classList.remove("pomme");
+}
+
+//manger une pomme et grandir
+
+//return true si la tete est sur la pomme.
+function testManger() {
+    let test = false; 
+    if (serpent.corps[0][0] === pomme[0] && serpent.corps[0][1] === pomme[1]) {
+        test = true;
+        console.log("coucou");
+    }
+    return test;
+}
+
+function leSerpentGrandit() {
+    let temps = serpent.corps[0];
+    serpent.corps.unshift(temps);
+}
+
+//Condition de défaite
+function isLimit(){
+    let test=false;
+    if (serpent.corps[0][0] < 1 || serpent.corps[0][1] < 1 ){
+        test=true;
+    }
+    return test;
+}
+
+function isEatingHimself() {
+    let test = false;
+    for (let elm = 1; elm < serpent.corps.length ; elm++){
+        if (serpent.corps[elm][0] == serpent.corps[0][0] && serpent.corps[elm][1] == serpent.corps[0][1]){
+            test=true;
+        }
+    }
+    return test;
+}
+
+function isGameOver(){
+    let test = false;
+    if (isLimit() || isEatingHimself()) {
+        test = true;
+    }
+    return test;
+}
+
+//initialisation
+nouvellePomme(pomme);
 alumerSerpent(serpent);
+updateScore();
 
 
 //fonctionnalité des touches deplacements.
 document
 .getElementById("top")
 .addEventListener('click', () => {
-    serpent.direction = 0;
+    if (serpent.direction != 2 ) {
+        serpent.direction = 0;
+    }
 })
 
 document
 .getElementById("right")
 .addEventListener('click', () => {
-    serpent.direction = 1;
+    if (serpent.direction != 3 ) {
+        serpent.direction = 1;
+    }
+
 })
 
 document
 .getElementById("down")
 .addEventListener('click', () => {
-    serpent.direction = 2;
+    if (serpent.direction != 0 ) {
+        serpent.direction = 2;
+    }
+
 })
 
 document
 .getElementById("left")
 .addEventListener('click', () => {
-    serpent.direction = 3;
+    if (serpent.direction != 1 ) {
+        serpent.direction = 3;
+    }
+
 })
 
 function deplacerSerpent() {
-    seDeplacer(serpent);
+    if (!isGameOver){
+        if (testManger()) {
+            supprPomme();
+            score++;
+            updateScore();
+            nouvellePomme();
+            leSerpentGrandit();
+        }
+        seDeplacer(serpent); 
+    } else {
+        clearInterval(x);
+    }
+    
 }
 
 let x;
 
 document
 .getElementById("start")
-.addEventListener('click', () => {
-    x = setInterval(deplacerSerpent, 500);
+.addEventListener('click', (e) => {
+    x = setInterval(deplacerSerpent, 150);
 })
 
 document
