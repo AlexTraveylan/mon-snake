@@ -8,7 +8,7 @@ function updateScore() {
 }
 
 //definition du serpent
-let direction = 0; // 0 haut 1 droite 2 bas 3 gauche
+let direction = 1; // 0 haut 1 droite 2 bas 3 gauche
 let corps = [[20 , 20], [19 , 20], [18 , 20]]; //la tete est toujours dans l'index 0
 
 class Serpent {
