@@ -1,35 +1,17 @@
 
 //definition du serpent
-let tete = [20 , 20]; //[x ; y]
 let direction = 0; // 0 haut 1 droite 2 bas 3 gauche
+let corps = [[20 , 20], [19 , 20], [18 , 20]]; //la tete est toujours dans l'index 0
 
 class Serpent {
-    constructor(tete, taille, direction) {
-        this.tete = tete;
+    constructor(corps, direction) {
+        this.corps = corps; 
         this.direction = direction;
-        this.taille = taille;
     }
 }
-//creation du serpent.
-let serpent = new Serpent(tete, 3, direction);
 
-//fonctions du serpents
-function seDeplacer(serpent) {
-    let direction = serpent.direction;
-    switch (direction) {
-        case 0:
-            serpent.tete[1] --;
-            break;
-        case 1:
-            serpent.tete[0] ++;
-            break;
-        case 2:
-            serpent.tete[1] ++;
-            break;
-        case 3:
-            serpent.tete[0] --;
-    }
-} 
+//creation du serpent.
+let serpent = new Serpent(corps, direction);
 
 //activer ou desactiver une case avec x et y
 function activerCase(row, column){
@@ -44,45 +26,108 @@ function desactiverCase(row, column) {
     .classList.remove("row_case_active");
 }
 
+
+//fonctions du serpents
+
+function alumerSerpent(serpent) {
+    for (let elmCorp of serpent.corps) {
+        activerCase(elmCorp[0], elmCorp[1]);
+    }
+}
+
+function eteindreSerpent(serpent) {
+    for (let elmCorp of serpent.corps) {
+        desactiverCase(elmCorp[0], elmCorp[1]);
+    }
+}
+
+function repositionnerSerpent(tete) {
+    serpent.corps.unshift(tete);
+    eteindreSerpent(serpent);
+    serpent.corps.pop();
+    alumerSerpent(serpent);
+}
+
+function seDeplacer(serpent) {
+    let direction = serpent.direction;
+    let tete;
+    let temps;
+    switch (direction) {
+        case 0:
+            //Calcul de la nouvelle tete apres le deplacement.
+            temps = [serpent.corps[0][0] , serpent.corps[0][1] -1];
+            tete = temps;
+            //fin du calcul
+            repositionnerSerpent(tete);
+            break;
+        case 1:
+            temps = [serpent.corps[0][0] + 1 , serpent.corps[0][1]];
+            tete = temps;
+            repositionnerSerpent(tete);
+
+            break;
+        case 2:
+            temps = [serpent.corps[0][0], serpent.corps[0][1] + 1];
+            tete = temps;
+            repositionnerSerpent(tete);
+
+            break;
+        case 3:
+            temps = [serpent.corps[0][0] - 1 , serpent.corps[0][1]];
+            tete = temps;
+            repositionnerSerpent(tete);
+
+            break;
+    }
+} 
+
+
 //initialisation du serpent
-document
-.getElementById(`r${serpent.tete[0]}_c${serpent.tete[1]}`)
-.classList.add("row_case_active");
+alumerSerpent(serpent);
 
 
 //fonctionnalité des touches deplacements.
 document
 .getElementById("top")
 .addEventListener('click', () => {
-    desactiverCase(serpent.tete[0], serpent.tete[1]);
     serpent.direction = 0;
-    seDeplacer(serpent);
-    activerCase(serpent.tete[0], serpent.tete[1]);
 })
 
 document
 .getElementById("right")
 .addEventListener('click', () => {
-    desactiverCase(serpent.tete[0], serpent.tete[1]);
     serpent.direction = 1;
-    seDeplacer(serpent);
-    activerCase(serpent.tete[0], serpent.tete[1]);
 })
 
 document
 .getElementById("down")
 .addEventListener('click', () => {
-    desactiverCase(serpent.tete[0], serpent.tete[1]);
     serpent.direction = 2;
-    seDeplacer(serpent);
-    activerCase(serpent.tete[0], serpent.tete[1]);
 })
 
 document
 .getElementById("left")
 .addEventListener('click', () => {
-    desactiverCase(serpent.tete[0], serpent.tete[1]);
     serpent.direction = 3;
-    seDeplacer(serpent);
-    activerCase(serpent.tete[0], serpent.tete[1]);
 })
+
+function deplacerSerpent() {
+    seDeplacer(serpent);
+}
+
+let x;
+
+document
+.getElementById("start")
+.addEventListener('click', () => {
+    x = setInterval(deplacerSerpent, 500);
+})
+
+document
+.getElementById("stop")
+.addEventListener('click', () => {
+    clearInterval(x);
+})
+
+
+
