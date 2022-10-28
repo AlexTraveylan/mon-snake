@@ -62,29 +62,47 @@ function seDeplacer(serpent) {
     let temps;
     switch (direction) {
         case 0:
+            console.log(serpent.corps[0][1]);
             //Calcul de la nouvelle tete apres le deplacement.
-            temps = [serpent.corps[0][0] , serpent.corps[0][1] -1];
-            tete = temps;
+            if (serpent.corps[0][1] == 1) {
+                temps = [serpent.corps[0][0] , 40];
+                tete = temps;
+            } else {
+                temps = [serpent.corps[0][0] , serpent.corps[0][1] -1];
+                tete = temps;
+            }
             //fin du calcul
             repositionnerSerpent(tete);
             break;
         case 1:
-            temps = [serpent.corps[0][0] + 1 , serpent.corps[0][1]];
-            tete = temps;
+            if (serpent.corps[0][0] == 40) {
+                temps = [1 , serpent.corps[0][1]];
+                tete = temps;
+            } else {
+                temps = [serpent.corps[0][0] + 1 , serpent.corps[0][1]];
+                tete = temps;
+            }
             repositionnerSerpent(tete);
-
             break;
         case 2:
-            temps = [serpent.corps[0][0], serpent.corps[0][1] + 1];
-            tete = temps;
+            if (serpent.corps[0][1] == 40){
+                temps = [serpent.corps[0][0], 1];
+                tete = temps;
+            } else {
+                temps = [serpent.corps[0][0], serpent.corps[0][1] + 1];
+                tete = temps;
+            }
             repositionnerSerpent(tete);
-
             break;
         case 3:
-            temps = [serpent.corps[0][0] - 1 , serpent.corps[0][1]];
-            tete = temps;
+            if (serpent.corps[0][0] == 1 ) {
+                temps = [40 , serpent.corps[0][1]];
+                tete = temps;
+            } else {
+                temps = [serpent.corps[0][0] - 1 , serpent.corps[0][1]];
+                tete = temps;
+            }
             repositionnerSerpent(tete);
-
             break;
     }
 } 
@@ -141,31 +159,19 @@ function leSerpentGrandit() {
 }
 
 //Condition de défaite
-function isLimit(){
-    let test=false;
-    if (serpent.corps[0][0] < 1 || serpent.corps[0][1] < 1 ){
-        test=true;
-    }
-    return test;
-}
 
 function isEatingHimself() {
-    let test = false;
+    let test = true;
     for (let elm = 1; elm < serpent.corps.length ; elm++){
         if (serpent.corps[elm][0] == serpent.corps[0][0] && serpent.corps[elm][1] == serpent.corps[0][1]){
-            test=true;
+            test=false;
+            console.log("myself");
         }
     }
     return test;
 }
 
-function isGameOver(){
-    let test = false;
-    if (isLimit() || isEatingHimself()) {
-        test = true;
-    }
-    return test;
-}
+
 
 //initialisation
 nouvellePomme(pomme);
@@ -210,7 +216,7 @@ document
 })
 
 function deplacerSerpent() {
-    if (!isGameOver){
+    if (isEatingHimself()){
         if (testManger()) {
             supprPomme();
             score++;
