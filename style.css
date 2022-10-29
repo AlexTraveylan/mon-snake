@@ -11,14 +11,26 @@
 }
 
 .controlers__btn{
-    padding: 3px;
-    margin:2px;
+    padding: 8px;
+    margin:4px;
     border: 2px solid rgb(0, 0, 0);
-    border-radius: 15%;
+    border-radius: 30% 30% 5% 5%;
     background-color: rgb(0, 0, 0);
     color: white;
     font-weight: bold;
     box-shadow: 5px 5px 5px gray;
+}
+
+.controlers__btn__right {
+    border-radius: 5% 30% 30% 5%;
+}
+
+.controlers__btn__down {
+    border-radius: 5% 5% 30% 30%;
+}
+
+.controlers__btn__left {
+    border-radius: 30% 5% 5% 30%;
 }
 
 .controlers__btn:active {
