@@ -4,7 +4,7 @@
 }
 
 .controlers__div {
-    padding : 0 5%
+    padding : 0 3%
 }
 #score {
     padding-top: 20%;
@@ -12,7 +12,7 @@
 
 .controlers__btn{
     padding: 8px;
-    margin:4px;
+    margin:3px;
     border: 2px solid rgb(0, 0, 0);
     border-radius: 30% 30% 5% 5%;
     background-color: rgb(0, 0, 0);
@@ -41,7 +41,7 @@
     flex-direction: row;
     justify-content: center;
     text-align: center;
-    padding: 20px;
+    padding-top: 10px;
 }
 
 .main_container {
