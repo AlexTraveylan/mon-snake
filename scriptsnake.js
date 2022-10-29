@@ -62,7 +62,6 @@ function seDeplacer(serpent) {
     let temps;
     switch (direction) {
         case 0:
-            console.log(serpent.corps[0][1]);
             //Calcul de la nouvelle tete apres le deplacement.
             if (serpent.corps[0][1] == 1) {
                 temps = [serpent.corps[0][0] , 40];
@@ -148,7 +147,6 @@ function testManger() {
     let test = false; 
     if (serpent.corps[0][0] === pomme[0] && serpent.corps[0][1] === pomme[1]) {
         test = true;
-        console.log("coucou");
     }
     return test;
 }
@@ -165,7 +163,6 @@ function isEatingHimself() {
     for (let elm = 1; elm < serpent.corps.length ; elm++){
         if (serpent.corps[elm][0] == serpent.corps[0][0] && serpent.corps[elm][1] == serpent.corps[0][1]){
             test=false;
-            console.log("myself");
         }
     }
     return test;
